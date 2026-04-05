@@ -9,7 +9,6 @@ var UI = (function () {
         'q': 5,
         'j': 8, 'x': 8,
         'z': 10,
-        // Accented vowels and ñ/ü count as their base letter value
         'á': 1, 'é': 1, 'í': 1, 'ó': 1, 'ú': 1, 'ü': 1,
         'ñ': 8
     };
@@ -39,6 +38,28 @@ var UI = (function () {
                 '</span>';
         }
         return html;
+    }
+
+    function renderDefinitions(entries) {
+        var html = '';
+        for (var i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            if (entry.title) {
+                html += '<div class="def-title">' + escapeHtml(entry.title) + '</div>';
+            }
+            html += '<ol class="def-list">';
+            for (var j = 0; j < entry.definitions.length; j++) {
+                html += '<li>' + escapeHtml(entry.definitions[j]) + '</li>';
+            }
+            html += '</ol>';
+        }
+        return html;
+    }
+
+    function escapeHtml(text) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(text));
+        return div.innerHTML;
     }
 
     var elements = {};
@@ -82,17 +103,55 @@ var UI = (function () {
 
             if (isValid) {
                 html += '<div class="result-score">Puntaje: <strong>' + score + '</strong> puntos</div>';
-                html += '<a href="' + Dictionary.getRAEUrl(word) + '" target="_blank" rel="noopener noreferrer" class="rae-link">' +
-                    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>' +
-                    'Ver definición en RAE' +
+
+                // Definition dropdown
+                html += '<details class="def-dropdown" id="def-dropdown">';
+                html += '<summary class="def-toggle">';
+                html += '<svg class="def-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>';
+                html += 'Definición RAE';
+                html += '<svg class="def-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+                html += '</summary>';
+                html += '<div class="def-content" id="def-content">';
+                html += '<div class="def-loading"><span class="def-spinner"></span> Cargando definición...</div>';
+                html += '</div>';
+                html += '</details>';
+
+                // Fallback link to RAE
+                html += '<a href="' + Dictionary.getRAEUrl(word) + '" target="_blank" rel="noopener noreferrer" class="rae-link rae-link-small">' +
+                    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>' +
+                    'Abrir en dle.rae.es' +
                     '</a>';
             }
 
             elements.result.innerHTML = html;
             elements.result.classList.remove('hidden');
             elements.result.style.animation = 'none';
-            elements.result.offsetHeight; // force reflow
+            elements.result.offsetHeight;
             elements.result.style.animation = '';
+
+            // Fetch definition when valid
+            if (isValid) {
+                var dropdown = document.getElementById('def-dropdown');
+                var defContent = document.getElementById('def-content');
+                var fetched = false;
+
+                dropdown.addEventListener('toggle', function () {
+                    if (dropdown.open && !fetched) {
+                        fetched = true;
+                        RAE.fetch(word)
+                            .then(function (entries) {
+                                defContent.innerHTML = renderDefinitions(entries);
+                            })
+                            .catch(function () {
+                                defContent.innerHTML =
+                                    '<div class="def-error">' +
+                                    'No se pudo cargar la definición. ' +
+                                    '<a href="' + Dictionary.getRAEUrl(word) + '" target="_blank" rel="noopener noreferrer">Ver en dle.rae.es</a>' +
+                                    '</div>';
+                            });
+                    }
+                });
+            }
         },
 
         updateWordCount: function () {

@@ -1,10 +1,11 @@
-var CACHE_NAME = 'scrabble-companion-v1';
+var CACHE_NAME = 'scrabble-companion-v2';
 var ASSETS = [
     '/',
     '/index.html',
     '/css/styles.css',
     '/js/app.js',
     '/js/dictionary.js',
+    '/js/rae.js',
     '/js/ui.js',
     '/data/words.txt',
     '/manifest.json',
