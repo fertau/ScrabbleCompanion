@@ -32,7 +32,7 @@ var UI = (function () {
         for (var i = 0; i < normalized.length; i++) {
             var letter = normalized[i];
             var value = getLetterValue(letter);
-            html += '<span class="tile">' +
+            html += '<span class="tile" style="--i:' + i + '">' +
                 letter.toUpperCase() +
                 '<span class="tile-points">' + value + '</span>' +
                 '</span>';
@@ -94,12 +94,15 @@ var UI = (function () {
             var isValid = Dictionary.isValid(word);
             var score = calculateScore(word);
             var statusClass = isValid ? 'valid' : 'invalid';
-            var statusText = isValid ? 'Palabra Válida' : 'Palabra No Válida';
+            var statusText = isValid ? 'Palabra Valida' : 'Palabra No Valida';
+            var checkIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            var crossIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+            var badgeIcon = isValid ? checkIcon : crossIcon;
             var badgeText = isValid ? 'Aceptada en Scrabble' : 'No encontrada en el diccionario';
 
             var html = '<div class="result-word">' + createTilesHTML(word) + '</div>';
             html += '<div class="result-status ' + statusClass + '">' + statusText + '</div>';
-            html += '<div class="result-badge ' + statusClass + '">' + badgeText + '</div>';
+            html += '<div class="result-badge ' + statusClass + '">' + badgeIcon + ' ' + badgeText + '</div>';
 
             if (isValid) {
                 html += '<div class="result-score">Puntaje: <strong>' + score + '</strong> puntos</div>';

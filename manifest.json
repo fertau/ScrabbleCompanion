@@ -4,8 +4,8 @@
     "description": "Valida palabras para Scrabble en español según el diccionario oficial FISE/RAE",
     "start_url": "/index.html",
     "display": "standalone",
-    "background_color": "#FAF0DC",
-    "theme_color": "#0A5C36",
+    "background_color": "#0f0f1a",
+    "theme_color": "#1a1a2e",
     "orientation": "portrait",
     "icons": [
         {

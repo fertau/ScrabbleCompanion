@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0A5C36">
+    <meta name="theme-color" content="#1a1a2e">
     <meta name="description" content="Validador de palabras para Scrabble en español. Comprueba si una palabra es válida según el diccionario oficial.">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -11,35 +11,63 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <div class="bg-decoration">
+        <div class="bg-blob bg-blob-1"></div>
+        <div class="bg-blob bg-blob-2"></div>
+        <div class="bg-blob bg-blob-3"></div>
+    </div>
+
     <div id="loading-overlay" class="loading-overlay">
         <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <p>Cargando diccionario...</p>
+            <div class="loading-tiles">
+                <span class="loading-tile" style="--d:0">S</span>
+                <span class="loading-tile" style="--d:1">C</span>
+                <span class="loading-tile" style="--d:2">R</span>
+                <span class="loading-tile" style="--d:3">A</span>
+                <span class="loading-tile" style="--d:4">B</span>
+                <span class="loading-tile" style="--d:5">B</span>
+                <span class="loading-tile" style="--d:6">L</span>
+                <span class="loading-tile" style="--d:7">E</span>
+            </div>
+            <p class="loading-text">Cargando diccionario</p>
+            <div class="loading-bar">
+                <div class="loading-bar-fill"></div>
+            </div>
             <p class="loading-sub">655,000+ palabras</p>
         </div>
     </div>
 
     <div class="app-container">
         <header>
-            <h1 class="app-title">
-                <span class="tile">S</span>
-                <span class="tile">C</span>
-                <span class="tile">R</span>
-                <span class="tile">A</span>
-                <span class="tile">B</span>
-                <span class="tile">B</span>
-                <span class="tile">L</span>
-                <span class="tile">E</span>
-            </h1>
-            <p class="app-subtitle">Companion</p>
+            <div class="logo-container">
+                <h1 class="app-title">
+                    <span class="tile" style="--i:0">S</span>
+                    <span class="tile" style="--i:1">C</span>
+                    <span class="tile" style="--i:2">R</span>
+                    <span class="tile" style="--i:3">A</span>
+                    <span class="tile" style="--i:4">B</span>
+                    <span class="tile" style="--i:5">B</span>
+                    <span class="tile" style="--i:6">L</span>
+                    <span class="tile" style="--i:7">E</span>
+                </h1>
+                <p class="app-subtitle">companion</p>
+            </div>
+            <p class="app-tagline">Validador de palabras en español</p>
         </header>
 
         <main>
             <form id="search-form" class="search-form" autocomplete="off">
                 <div class="search-input-wrapper">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
                     <input
                         type="text"
                         id="word-input"
@@ -51,10 +79,7 @@
                         spellcheck="false"
                     >
                     <button type="submit" class="search-btn" aria-label="Buscar">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
+                        Validar
                     </button>
                 </div>
             </form>
