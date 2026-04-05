@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A5C36">
+    <meta name="description" content="Validador de palabras para Scrabble en español. Comprueba si una palabra es válida según el diccionario oficial.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Scrabble Companion</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Cargando diccionario...</p>
+            <p class="loading-sub">636,000+ palabras</p>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <h1 class="app-title">
+                <span class="tile">S</span>
+                <span class="tile">C</span>
+                <span class="tile">R</span>
+                <span class="tile">A</span>
+                <span class="tile">B</span>
+                <span class="tile">B</span>
+                <span class="tile">L</span>
+                <span class="tile">E</span>
+            </h1>
+            <p class="app-subtitle">Companion</p>
+        </header>
+
+        <main>
+            <form id="search-form" class="search-form" autocomplete="off">
+                <div class="search-input-wrapper">
+                    <input
+                        type="text"
+                        id="word-input"
+                        class="search-input"
+                        placeholder="Escribe una palabra..."
+                        autocomplete="off"
+                        autocapitalize="none"
+                        autocorrect="off"
+                        spellcheck="false"
+                    >
+                    <button type="submit" class="search-btn" aria-label="Buscar">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+
+            <div id="result" class="result hidden"></div>
+
+            <div id="word-count" class="word-count"></div>
+        </main>
+
+        <footer>
+            <p>Diccionario basado en palabras del español (FISE/RAE)</p>
+        </footer>
+    </div>
+
+    <script src="js/dictionary.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
