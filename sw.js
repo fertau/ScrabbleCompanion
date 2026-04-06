@@ -1,4 +1,4 @@
-var CACHE_NAME = 'scrabble-companion-v3';
+var CACHE_NAME = 'scrabble-companion-v4';
 var ASSETS = [
     '/',
     '/index.html',

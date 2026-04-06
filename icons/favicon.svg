@@ -1,6 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#1a1a2e"/>
-  <rect x="6" y="5" width="20" height="20" rx="3" fill="#d4a843"/>
-  <text x="16" y="19.5" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#1a1a2e" text-anchor="middle">S</text>
-  <text x="22.5" y="23" font-family="Arial, sans-serif" font-size="5.5" font-weight="bold" fill="#1a1a2e" text-anchor="middle">1</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="wood" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#E2C88C"/>
+      <stop offset="25%" stop-color="#D4B87A"/>
+      <stop offset="50%" stop-color="#CCAB6E"/>
+      <stop offset="75%" stop-color="#C4A668"/>
+      <stop offset="100%" stop-color="#B89A5C"/>
+    </linearGradient>
+    <linearGradient id="woodGrain1" x1="0" y1="0" x2="1" y2="0.2">
+      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+      <stop offset="30%" stop-color="rgba(255,255,255,0.06)" />
+      <stop offset="50%" stop-color="rgba(255,255,255,0)" />
+      <stop offset="70%" stop-color="rgba(255,255,255,0.04)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+    </linearGradient>
+    <linearGradient id="topEdge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.45)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="rgba(0,0,0,0.2)"/>
+    </filter>
+    <filter id="innerShadow">
+      <feOffset dx="0" dy="3"/>
+      <feGaussianBlur stdDeviation="2"/>
+      <feComposite operator="out" in="SourceGraphic"/>
+      <feFlood flood-color="rgba(0,0,0,0.12)"/>
+      <feComposite operator="in" in2=""/>
+      <feComposite operator="over" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#F5F5F5"/>
+  <!-- Tile with shadow -->
+  <g filter="url(#shadow)">
+    <rect x="56" y="48" width="400" height="400" rx="40" fill="url(#wood)"/>
+  </g>
+  <!-- Wood grain overlay -->
+  <rect x="56" y="48" width="400" height="400" rx="40" fill="url(#woodGrain1)" opacity="0.5"/>
+  <!-- Subtle horizontal grain lines -->
+  <line x1="80" y1="148" x2="432" y2="152" stroke="rgba(160,130,70,0.08)" stroke-width="2"/>
+  <line x1="80" y1="198" x2="432" y2="196" stroke="rgba(160,130,70,0.06)" stroke-width="1.5"/>
+  <line x1="80" y1="260" x2="432" y2="262" stroke="rgba(160,130,70,0.07)" stroke-width="2"/>
+  <line x1="80" y1="320" x2="432" y2="318" stroke="rgba(160,130,70,0.05)" stroke-width="1.5"/>
+  <line x1="80" y1="370" x2="432" y2="372" stroke="rgba(160,130,70,0.06)" stroke-width="1"/>
+  <!-- Top edge highlight -->
+  <rect x="56" y="48" width="400" height="60" rx="40" fill="url(#topEdge)" opacity="0.7"/>
+  <!-- Bottom edge shadow -->
+  <rect x="56" y="398" width="400" height="50" rx="0" fill="rgba(0,0,0,0.06)" clip-path="inset(0 0 0 0 round 0 0 40px 40px)"/>
+  <!-- Letter S -->
+  <text x="256" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="260" font-weight="800" fill="#5C4A2E" text-anchor="middle" opacity="0.9">S</text>
+  <!-- Point value -->
+  <text x="390" y="415" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="700" fill="#5C4A2E" text-anchor="middle" opacity="0.5">1</text>
+  <!-- Very subtle emboss on letter -->
+  <text x="256" y="328" font-family="system-ui, -apple-system, sans-serif" font-size="260" font-weight="800" fill="rgba(255,255,255,0.15)" text-anchor="middle">S</text>
 </svg>

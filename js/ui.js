@@ -91,21 +91,32 @@ var UI = (function () {
         },
 
         showResult: function (word) {
-            var isValid = Dictionary.isValid(word);
+            var result = Dictionary.validate(word);
+            var isValid = result.valid;
             var score = calculateScore(word);
             var statusClass = isValid ? 'valid' : 'invalid';
             var statusText = isValid ? 'Palabra Valida' : 'Palabra No Valida';
             var checkIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
             var crossIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
             var badgeIcon = isValid ? checkIcon : crossIcon;
-            var badgeText = isValid ? 'Aceptada en Scrabble' : 'No encontrada en el diccionario';
+            var badgeText = isValid ? 'Aceptada en Scrabble' : (result.reason || 'No encontrada en el diccionario');
 
             var html = '<div class="result-word">' + createTilesHTML(word) + '</div>';
             html += '<div class="result-status ' + statusClass + '">' + statusText + '</div>';
             html += '<div class="result-badge ' + statusClass + '">' + badgeIcon + ' ' + badgeText + '</div>';
 
+            // Show rule violation hint if applicable
+            if (!isValid && result.ruleViolation) {
+                html += '<div class="result-rule-hint">' +
+                    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> ' +
+                    'Regla oficial de Scrabble</div>';
+            }
+
             if (isValid) {
                 html += '<div class="result-score">Puntaje: <strong>' + score + '</strong> puntos</div>';
+
+                // RAE verification badge placeholder
+                html += '<div class="rae-verify-status" id="rae-verify-status"></div>';
 
                 // Definition dropdown
                 html += '<details class="def-dropdown" id="def-dropdown">';
@@ -132,6 +143,17 @@ var UI = (function () {
             elements.result.offsetHeight;
             elements.result.style.animation = '';
 
+            // Show RAE verification status from cache
+            if (isValid) {
+                var verifyEl = document.getElementById('rae-verify-status');
+                RAE.isVerified(word).then(function (status) {
+                    if (status === true) {
+                        verifyEl.innerHTML = '<span class="rae-verified">' + checkIcon + ' Verificada en RAE</span>';
+                    }
+                    // null = not checked yet, don't show anything
+                });
+            }
+
             // Fetch definition when valid
             if (isValid) {
                 var dropdown = document.getElementById('def-dropdown');
@@ -142,13 +164,21 @@ var UI = (function () {
                     if (dropdown.open && !fetched) {
                         fetched = true;
                         RAE.fetch(word)
-                            .then(function (entries) {
-                                defContent.innerHTML = renderDefinitions(entries);
+                            .then(function (data) {
+                                defContent.innerHTML = renderDefinitions(data.entries);
+                                // Update verification badge after successful fetch
+                                var vEl = document.getElementById('rae-verify-status');
+                                if (vEl && data.verified) {
+                                    vEl.innerHTML = '<span class="rae-verified">' + checkIcon + ' Verificada en RAE</span>';
+                                }
+                                if (data.cached) {
+                                    defContent.innerHTML += '<div class="def-cached-note">Definición guardada localmente</div>';
+                                }
                             })
                             .catch(function () {
                                 defContent.innerHTML =
                                     '<div class="def-error">' +
-                                    'No se pudo cargar la definición. ' +
+                                    'RAE no disponible en este momento. ' +
                                     '<a href="' + Dictionary.getRAEUrl(word) + '" target="_blank" rel="noopener noreferrer">Ver en dle.rae.es</a>' +
                                     '</div>';
                             });
